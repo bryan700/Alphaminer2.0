@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mining Dashboard</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #0f172a;
+      color: white;
+      margin-top: 50px;
+    }
+    button {
+      padding: 15px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: #22c55e;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>⛏ Cloud Mining Dashboard</h1>
+
+  <p id="user">Loading user...</p>
+
+  <button onclick="mine()">Start Mining</button>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    const user = tg.initDataUnsafe.user;
+
+console.log("Telegram User ID:", user.id);
+console.log("First name:", user.first_name);
+
+document.getElementById("user").innerText =
+  "Welcome " + user.first_name + " (ID: " + user.id + ")";
+
+    function mine() {
+      tg.sendData(JSON.stringify({
+        action: "mine",
+        time: Date.now()
+      }));
+    }
+  </script>
+
+</body>
+</html>
