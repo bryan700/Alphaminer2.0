@@ -21,6 +21,11 @@
       border-radius: 10px;
       background: #22c55e;
       color: white;
+      cursor: pointer;
+    }
+
+    h2 {
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -31,7 +36,9 @@
 
   <p id="user">Loading user...</p>
 
-  <button onclick="mine()">Start Mining</button>
+  <h2>Balance: <span id="balance">0.0000</span> TON</h2>
+
+  <button onclick="startMining()">Start Mining</button>
 
   <script>
     window.addEventListener("DOMContentLoaded", () => {
@@ -65,24 +72,24 @@
       }
 
       let balance = 0;
-let mining = false;
+      let mining = false;
 
-window.startMining = function () {
+      window.startMining = function () {
 
-  if (mining) return;
+        if (mining) return;
 
-  mining = true;
+        mining = true;
 
-  setInterval(() => {
+        setInterval(() => {
 
-    balance += 0.001;
+          balance += 0.001;
 
-    document.getElementById("balance").innerText =
-      balance.toFixed(4);
+          document.getElementById("balance").innerText =
+            balance.toFixed(4);
 
-  }, 1000);
+        }, 1000);
 
-};
+      };
 
     });
   </script>
