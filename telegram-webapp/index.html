@@ -60,10 +60,10 @@
 
         console.log("Telegram User ID:", user.id);
         console.log("First name:", user.first_name);
-        loadBalance(user.id);
+        
         document.getElementById("user").innerText =
           "Welcome " + user.first_name + " (ID: " + user.id + ")";
-
+        loadBalance(user.id);
       } else {
 
         document.getElementById("user").innerText =
@@ -130,9 +130,8 @@ async function saveBalance(userId) {
         mining = true;
 
         setInterval(() => {
-        saveBalance(user.id);
           balance += 0.001;
-
+          saveBalance(user.id);
           document.getElementById("balance").innerText =
             balance.toFixed(4);
 
