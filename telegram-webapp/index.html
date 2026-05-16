@@ -60,7 +60,7 @@
 
         console.log("Telegram User ID:", user.id);
         console.log("First name:", user.first_name);
-
+        loadBalance(user.id);
         document.getElementById("user").innerText =
           "Welcome " + user.first_name + " (ID: " + user.id + ")";
 
@@ -74,6 +74,55 @@
       let balance = 0;
       let mining = false;
 
+      async function loadBalance(userId) {
+
+        try {
+
+          const response = await fetch(
+      "https://alphaminer2-0-2.onrender.com/get_balance/" + userId
+    );
+
+    const data = await response.json();
+
+    balance = parseFloat(data.balance);
+
+    document.getElementById("balance").innerText =
+      balance.toFixed(4);
+
+  } catch (error) {
+
+    console.log("Failed to load balance:", error);
+
+  }
+
+}
+
+async function saveBalance(userId) {
+
+  try {
+
+    await fetch(
+      "https://alphaminer2-0-2.onrender.com/save_balance",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          balance: balance
+        })
+      }
+    );
+
+  } catch (error) {
+
+    console.log("Failed to save balance:", error);
+
+  }
+
+}
+
       window.startMining = function () {
 
         if (mining) return;
@@ -81,7 +130,7 @@
         mining = true;
 
         setInterval(() => {
-
+        saveBalance(user.id);
           balance += 0.001;
 
           document.getElementById("balance").innerText =
