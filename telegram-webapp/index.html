@@ -64,14 +64,25 @@
 
       }
 
-      window.mine = function () {
+      let balance = 0;
+let mining = false;
 
-        tg.sendData(JSON.stringify({
-          action: "mine",
-          time: Date.now()
-        }));
+window.startMining = function () {
 
-      };
+  if (mining) return;
+
+  mining = true;
+
+  setInterval(() => {
+
+    balance += 0.001;
+
+    document.getElementById("balance").innerText =
+      balance.toFixed(4);
+
+  }, 1000);
+
+};
 
     });
   </script>
