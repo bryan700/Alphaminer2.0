@@ -4,7 +4,6 @@ import time
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import CommandStart
 from aiogram.types import Message
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, WebAppInfo
 
 from config import BOT_TOKEN
 from database import *
@@ -14,19 +13,6 @@ from keyboards import main_menu
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-web_app_button = ReplyKeyboardMarkup(
-    keyboard=[
-        [
-            KeyboardButton(
-                text="🚀 Open AlphaMiner",
-                web_app=WebAppInfo(
-                    url=f"https://alphaminer2-0-8m1j.onrender.com?user_id={message.from_user.id}"
-                )
-            )
-        ]
-    ],
-    resize_keyboard=True
-)
 
 @dp.message(CommandStart())
 async def start(message: Message):
@@ -58,9 +44,9 @@ Use:
 """
 
     await message.answer(
-        text,
-        reply_markup=web_app_button
-    )
+    text,
+    reply_markup=main_menu
+ )
 
 
 @dp.message(lambda msg: msg.text == "💰 Balance")
