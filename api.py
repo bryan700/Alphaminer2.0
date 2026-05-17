@@ -5,8 +5,21 @@ import sqlite3
 app = Flask(__name__)
 CORS(app)
 
-DATABASE = "data/database.db"
+DATABASE = "database.db"
 
+def init_db():
+
+    conn = sqlite3.connect(DATABASE)
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            user_id INTEGER PRIMARY KEY,
+            balance REAL DEFAULT 0
+        )
+    """)
+
+    conn.commit()
+    conn.close()
 
 def get_db():
     conn = sqlite3.connect(DATABASE)
@@ -25,18 +38,14 @@ def save_balance():
     conn = get_db()
 
     conn.execute(
-        "UPDATE users SET balance = ? WHERE user_id = ?",
-        (balance, user_id)
-    )
-
-    conn.commit()
-    conn.close()
-
-    return jsonify({
-        "status": "success",
-        "balance": balance
-    })
-
+    """
+    INSERT INTO users (user_id, balance)
+    VALUES (?, ?)
+    ON CONFLICT(user_id)
+    DO UPDATE SET balance = excluded.balance
+    """,
+    (user_id, balance)
+)
 
 @app.route("/get_balance/<int:user_id>")
 def get_balance(user_id):
@@ -59,6 +68,7 @@ def get_balance(user_id):
         "balance": 0
     })
 
+init_db()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
